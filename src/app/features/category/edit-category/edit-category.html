@@ -1,0 +1,37 @@
+<div class="container">
+	<h2 class="mt-3">Edit Category</h2>
+
+	<form [formGroup]="editCategoryFormGroup" (ngSubmit)="onSubmit()">
+
+		<div class="mb-3">
+			<label for="categoryId" class="form-label">Id</label>
+			<input type="text" class="form-control" id="categoryId" [value]="id()" disabled>
+			
+		</div>
+
+		<div class="mb-3">
+			<label for="categoryName" class="form-label">Category Name</label>
+			<input type="text" class="form-control" id="categoryName" formControlName="name" placeholder="Enter category name">
+			@if (nameFormControl.touched && nameFormControl.hasError('required')) {
+				<div class="text-danger">Category name is required.</div>
+			}
+			@if (nameFormControl.touched && nameFormControl.hasError('maxlength')) {
+				<div class="text-danger">Category name max 20 characters.</div>
+			}
+		</div>
+		<div class="mb-3">
+			<label for="categoryDescription" class="form-label">URL Handle (Slug)</label>
+			<input type="text" class="form-control" id="categoryUrlHandle" formControlName="urlHandle" placeholder="Enter URL handle">
+			@if (urlHandleFormControl.touched && urlHandleFormControl.hasError('required')) {
+				<div class="text-danger">URL handle is required.</div>
+			}
+			@if (urlHandleFormControl.touched && urlHandleFormControl.hasError('maxlength')) {
+				<div class="text-danger">URL handle max 10 characters.</div>
+			}
+		</div>
+		<div class="mb-3">
+			<button type="submit" class="btn btn-primary" [disabled]="editCategoryFormGroup.valid === false">Update Category</button>
+
+		</div>
+	</form>	
+</div>

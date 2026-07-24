@@ -22,6 +22,8 @@
 					<th>ID</th>
 					<th>Name</th>
 					<th>UrlHandle</th>
+					<th>Edit</th>
+					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,6 +32,13 @@
 					<td>{{category.id}}</td>
 					<td>{{category.name}}</td>
 					<td>{{category.urlHandle}}</td>
+					<td>
+
+						<a [routerLink]="['/admin/categories/edit', category.id]" class="btn btn-light">Edit</a>
+					</td>
+					<td>
+						&nbsp;
+					</td>
 				</tr>
 
 				}

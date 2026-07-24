@@ -1,6 +1,6 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Injectable, signal} from '@angular/core';
-import { AddCategoryRequest, Category } from '../models/category.model';
+import { inject, Injectable, InputSignal, signal} from '@angular/core';
+import { AddCategoryRequest, Category, UpdateCategoryRequest } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -12,6 +12,7 @@ export class CategoryService {
   private baseUrl = environment.apiUrl;
 
   addCategoryStatus = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
+  updateCategoryStatus = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   addCategory(category: AddCategoryRequest) {
     this.addCategoryStatus.set('loading');
@@ -32,6 +33,30 @@ export class CategoryService {
     //return this.http.get(`${this.baseUrl}/api/Categories`); 
     return httpResource<Category[]>(() => `${this.baseUrl}/api/Categories`);  
   }
+
+  getCategoryById(id: InputSignal<string | undefined>) {
+    return httpResource<Category>(() => `${this.baseUrl}/api/Categories/${id()}`);
+  } 
+
+  updateCategory(id: string, updateCategoryRequestDto: UpdateCategoryRequest) {
+    
+    this.updateCategoryStatus.set('loading');
+
+    var obs = this.http.put<void>(`${this.baseUrl}/api/Categories/${id}`, updateCategoryRequestDto)
+      .subscribe({
+        next: () => {
+          console.log('Category updated successfully');
+          this.updateCategoryStatus.set('success');
+        },
+        error: (error) => {
+          console.error('Error updating category:', error);
+          this.updateCategoryStatus.set('error');
+        }
+      }) ;
+  }
+
+
+  
 }
 
 
